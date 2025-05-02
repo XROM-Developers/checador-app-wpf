@@ -1,0 +1,79 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# Rider project files
+.idea/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio cache files
+.vs/
+
+# Auto-generated files
+Generated_Code/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# NuGet
+*.nupkg
+packages/
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Others
+*.log
+*.tlog
+*.cache
+*.pdb
+*.mdb
+
+# Publish artifacts
+publish/
+
+# Secrets or sensitive configs
+appsettings.*.json
+secrets.json
+
+# DotCover
+.idea.DotSettings.user
+*.dotCover
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Test Results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.scc
+
+# XAML Designer
+*.vspscc
+*.vssscc
+*.dbmdl
+*.vspx
+*.vssscc
+
+# JetBrains Rider
+.idea/
+*.sln.iml

@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="ControlDeCheckeo.Components.Fingerprints.FingerprintCaptureControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="White" Height="Auto" Width="Auto">
+
+    <Grid Margin="10">
+        <StackPanel>
+            <TextBlock Text="Captura de Huella"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Foreground="#1F3A66"
+                       Margin="0,0,0,10"/>
+
+            <!-- Preview de huella -->
+            <Border BorderBrush="#2C6FB0"
+                    BorderThickness="2"
+                    Height="200"
+                    Background="#ECF0F1"
+                    CornerRadius="6"
+                    Margin="0,0,0,10">
+                <Image x:Name="imgHuellaPreview"
+                       Stretch="Uniform"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+            </Border>
+
+            <Button x:Name="btnIniciarCaptura"
+                    Content="Iniciar Captura"
+                    Click="IniciarCaptura_Click"
+                    Background="#3498DB"
+                    Foreground="White"
+                    FontWeight="SemiBold"
+                    BorderBrush="#1F3A66"
+                    BorderThickness="1"
+                    Width="160"
+                    Height="36"
+                    Margin="0,0,0,10"
+                    Cursor="Hand"/>
+
+            <TextBlock x:Name="txtStatus"
+                       Text="Esperando..."
+                       Foreground="#2C6FB0"
+                       FontWeight="Medium"
+                       Margin="0,10,0,0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,56 @@
+﻿<Window x:Class="ControlDeCheckeo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ControlDeCheckeo"
+        mc:Ignorable="d"
+        Title="Control de Checkeo"
+        MinHeight="450" MinWidth="800"
+        ResizeMode="CanResize"
+        Background="#ECF0F1">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Encabezado -->
+        <Border Background="#1F3A66" Padding="14">
+            <DockPanel>
+                <TextBlock Text="Sistema de Control de Checkeo"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           DockPanel.Dock="Left"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="RRHH"
+                            Margin="5,0,0,0"
+                            Padding="12,6"
+                            Click="RRHH_Click"
+                            Background="#3498DB"
+                            Foreground="White"
+                            BorderBrush="#2C6FB0"
+                            FontWeight="SemiBold"
+                            Cursor="Hand"/>
+
+                    <Button Content="Vigilante"
+                            Margin="5,0,0,0"
+                            Padding="12,6"
+                            Click="Vigilante_Click"
+                            Background="#3498DB"
+                            Foreground="White"
+                            BorderBrush="#2C6FB0"
+                            FontWeight="SemiBold"
+                            Cursor="Hand"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Contenedor de vistas -->
+        <ContentControl x:Name="MainContent" Grid.Row="1"/>
+    </Grid>
+</Window>
