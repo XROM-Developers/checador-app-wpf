@@ -1,21 +1,22 @@
 ﻿<UserControl x:Class="ControlDeCheckeo.Views.CheckerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="{StaticResource BrushFondoClaro}">
+             Background="{StaticResource BrushColorFondo}">
 
     <Grid Margin="20">
-        <Border Background="White" Padding="30" CornerRadius="10">
+        <Border Style="{StaticResource BorderPanel}">
             <StackPanel>
-                <TextBlock Text="Registro de Entrada" FontSize="22" FontWeight="Bold"
-                           Foreground="{StaticResource BrushVerdePrincipal}" Margin="0,0,0,20"/>
+                <!-- Título -->
+                <TextBlock Text="Registro de Entrada" Style="{StaticResource TextBlockTitle}" Foreground="{StaticResource BrushColorSecundario}" Margin="0,0,0,20"/>
 
-                <Button Content="Escanear Huella" Style="{StaticResource BotonVerde}" Width="160" HorizontalAlignment="Left"/>
+                <!-- Botón de Escanear Huella -->
+                <Button Content="Escanear Huella" Style="{StaticResource BotonPrincipal}" Width="160" HorizontalAlignment="Left"/>
 
-                <TextBlock Text="Ultima verificacion: -" Margin="0,20,0,5"
-                           Foreground="{StaticResource BrushTextoOscuro}" />
+                <!-- Información de última verificación -->
+                <TextBlock Text="Última verificación: -" Style="{StaticResource TextBlockSecondary}" Margin="0,20,0,5"/>
 
-                <TextBlock Text="Resultado: Esperando..." Margin="0,0,0,0"
-                           Foreground="{StaticResource BrushTextoOscuro}" />
+                <!-- Resultado -->
+                <TextBlock Text="Resultado: Esperando..." Style="{StaticResource TextBlockSecondary}" />
             </StackPanel>
         </Border>
     </Grid>

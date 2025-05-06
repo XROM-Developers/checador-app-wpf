@@ -1,24 +1,87 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Color definitions -->
+    <Color x:Key="ColorPrincipal">#1F3A66</Color>
+    <Color x:Key="ColorSecundario">#3498DB</Color>
+    <Color x:Key="ColorFondo">#F4F6F7</Color>
+    <Color x:Key="ColorError">Red</Color>
+    <Color x:Key="ColorTextGray">#BDC3C7</Color>
+    <Color x:Key="ColorDarkGray">#2c3e50</Color>
 
-    <Color x:Key="VerdePrincipal">#2ecc71</Color>
-    <Color x:Key="VerdeOscuro">#27ae60</Color>
-    <Color x:Key="FondoClaro">#ecf0f1</Color>
-    <Color x:Key="TextoOscuro">#2c3e50</Color>
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="BrushColorPrincipal" Color="{StaticResource ColorPrincipal}" />
+    <SolidColorBrush x:Key="BrushColorSecundario" Color="{StaticResource ColorSecundario}" />
+    <SolidColorBrush x:Key="BrushColorFondo" Color="{StaticResource ColorFondo}" />
+    <SolidColorBrush x:Key="BrushColorError" Color="{StaticResource ColorError}" />
+    <SolidColorBrush x:Key="BrushColorTextGray" Color="{StaticResource ColorTextGray}" />
+    <SolidColorBrush x:Key="BrushColorDarkGray" Color="{StaticResource ColorDarkGray}" />
 
-    <SolidColorBrush x:Key="BrushVerdePrincipal" Color="{StaticResource VerdePrincipal}" />
-    <SolidColorBrush x:Key="BrushVerdeOscuro" Color="{StaticResource VerdeOscuro}" />
-    <SolidColorBrush x:Key="BrushFondoClaro" Color="{StaticResource FondoClaro}" />
-    <SolidColorBrush x:Key="BrushTextoOscuro" Color="{StaticResource TextoOscuro}" />
-
-    <Style TargetType="Button" x:Key="BotonVerde">
-        <Setter Property="Background" Value="{StaticResource BrushVerdePrincipal}" />
+    <!-- Estilo para los botones principales -->
+    <Style x:Key="BotonPrincipal" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource BrushColorSecundario}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Padding" Value="10,5" />
         <Setter Property="Margin" Value="5" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="BorderBrush" Value="{StaticResource BrushVerdeOscuro}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BrushColorPrincipal}" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Cursor" Value="Hand" />
     </Style>
+
+    <!-- Estilo para los botones secundarios -->
+    <Style x:Key="BotonSecundario" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{StaticResource BrushColorSecundario}" />
+        <Setter Property="Foreground" Value="{StaticResource BrushColorSecundario}" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Padding" Value="10,5" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Height" Value="36"/>
+    </Style>
+
+    <!-- Estilo para los Border -->
+    <Style x:Key="BorderPanel" TargetType="Border">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="{StaticResource BrushColorPrincipal}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="24" />
+        <Setter Property="Margin" Value="10" />
+    </Style>
+
+    <!-- Estilo para los TextBlocks -->
+    <Style x:Key="TextBlockTitle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{StaticResource BrushColorPrincipal}" />
+        <Setter Property="Margin" Value="0,0,0,20" />
+    </Style>
+
+    <!-- Estilo para los TextBlocks secundarios -->
+    <Style x:Key="TextBlockSecondary" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{StaticResource BrushColorDarkGray}" />
+        <Setter Property="Margin" Value="0,10,0,10" />
+    </Style>
+
+    <!-- Estilo para los TextBox -->
+    <Style x:Key="TextBoxStyle" TargetType="TextBox">
+        <Setter Property="BorderBrush" Value="{StaticResource BrushColorTextGray}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="#FBFCFC" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="MinHeight" Value="80" />
+        <Setter Property="MaxHeight" Value="150" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+    </Style>
+
+    <!-- Estilo para la vista previa de la imagen -->
+    <Style x:Key="ImageStyle" TargetType="Image">
+        <Setter Property="Stretch" Value="UniformToFill"/>
+    </Style>
+
 </ResourceDictionary>

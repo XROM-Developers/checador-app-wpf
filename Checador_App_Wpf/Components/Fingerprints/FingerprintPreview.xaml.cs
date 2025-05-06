@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace ControlDeCheckeo.Components.Fingerprints
+namespace Checador_App_Wpf.Components.Fingerprints
 {
-    /// <summary>
-    /// Lógica de interacción para FingerprintPreview.xaml
-    /// </summary>
-    public partial class FingerprintPreview : Window
+    public partial class FingerprintPreview : UserControl
     {
         public FingerprintPreview()
         {
             InitializeComponent();
+        }
+
+        // Método para actualizar la imagen de la huella
+        public void UpdateFingerprintImage(System.Windows.Media.Imaging.BitmapImage image)
+        {
+            imgPreview.Source = image;
+        }
+
+        // Método para actualizar el estado
+        public void UpdatePreviewStatus(string status)
+        {
+            txtPreviewStatus.Text = status;
         }
     }
 }

@@ -1,26 +1,27 @@
 ﻿<UserControl x:Class="ControlDeCheckeo.Views.LoginView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="{StaticResource BrushFondoClaro}">
+             Background="{StaticResource BrushColorFondo}">
 
     <Grid>
-        <Border CornerRadius="10" Background="White" Padding="40" Width="400" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Border CornerRadius="12" Background="White" Padding="40" Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource BorderPanel}">
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                <TextBlock Text="CONTROL BIOMETRICO" FontSize="24" FontWeight="Bold"
-                           Foreground="#2ecc71" TextAlignment="Center" Margin="0 0 0 20"/>
+                <!-- Título -->
+                <TextBlock Text="CONTROL BIOMETRICO" Style="{StaticResource TextBlockTitle}" Foreground="{StaticResource BrushColorSecundario}" TextAlignment="Center" Margin="0 0 0 20"/>
 
-                <TextBlock Text="Usuario" Margin="0,10,0,5" Foreground="#2c3e50"/>
-                <TextBox Height="30" Margin="0,0,0,10" Padding="5" Background="#ecf0f1"/>
+                <!-- Campo de Usuario -->
+                <TextBlock Text="Usuario" Style="{StaticResource TextBlockSecondary}"/>
+                <TextBox Height="32" Margin="0,0,0,10" Padding="5" Style="{StaticResource TextBoxStyle}" />
 
-                <TextBlock Text="Contrasena" Margin="0,10,0,5" Foreground="#2c3e50"/>
-                <PasswordBox Height="30" Margin="0,0,0,20" Padding="5" Background="#ecf0f1"/>
+                <!-- Campo de Contraseña -->
+                <TextBlock Text="Contraseña" Style="{StaticResource TextBlockSecondary}"/>
+                <PasswordBox Height="32" Margin="0,0,0,20" Padding="5" Style="{StaticResource }"/>
 
-                <Button Content="Iniciar Sesion" Background="#2ecc71" Foreground="White"
-                        FontWeight="Bold" Height="35" Cursor="Hand"
-                        BorderBrush="#27ae60" BorderThickness="1" />
+                <!-- Botón de Iniciar Sesión -->
+                <Button Content="Iniciar Sesión" Style="{StaticResource BotonPrincipal}" Height="35" Cursor="Hand" BorderBrush="{StaticResource BrushColorPrincipal}" BorderThickness="1"/>
 
-                <TextBlock Text="(c) 2025 Control Biometrico" FontSize="10"
-                           Foreground="#7f8c8d" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+                <!-- Texto de Derechos -->
+                <TextBlock Text="(c) 2025 Control Biometrico" FontSize="10" Foreground="#7f8c8d" HorizontalAlignment="Center" Margin="0,20,0,0"/>
             </StackPanel>
         </Border>
     </Grid>
