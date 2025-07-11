@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Checador_App_Wpf.Components.Fingerprints.FingerPreviewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="250" Width="250">
+    <Border Background="#FBFCFC" CornerRadius="10" Padding="10"
+            BorderBrush="#D6DBDF" BorderThickness="1">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,10">
+            <!-- Imagen de la huella -->
+            <Border Width="150" Height="150" Background="#ECF0F1" CornerRadius="8"
+                    BorderBrush="#3498DB" BorderThickness="2" Margin="0,0,0,10">
+                <Image x:Name="imgFingerprint" Stretch="UniformToFill"/>
+            </Border>
+
+            <!-- Texto del estado de la huella -->
+            <TextBlock x:Name="txtStatus"
+                       Text="Esperando huella..."
+                       FontSize="14"
+                       Foreground="#566573"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+    </Border>
+</UserControl>

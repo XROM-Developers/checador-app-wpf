@@ -77,11 +77,34 @@
         <Setter Property="TextWrapping" Value="Wrap" />
         <Setter Property="AcceptsReturn" Value="True" />
         <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="12">
+                        <ScrollViewer x:Name="PART_ContentHost" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
+
 
     <!-- Estilo para la vista previa de la imagen -->
     <Style x:Key="ImageStyle" TargetType="Image">
         <Setter Property="Stretch" Value="UniformToFill"/>
     </Style>
+
+    <!-- Sombra estAndar para bordes o elementos flotantes -->
+    <DropShadowEffect x:Key="ShadowEffect"
+                      Color="Black"
+                      BlurRadius="12"
+                      ShadowDepth="4"
+                      Opacity="0.25"/>
+
 
 </ResourceDictionary>

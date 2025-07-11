@@ -6,8 +6,32 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!-- MahApps estilos -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+
+                <!-- Tus estilos personalizados -->
                 <ResourceDictionary Source="Resources/Estilos.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Fuente Poppins -->
+            <FontFamily x:Key="FontPoppins">pack://application:,,,/Assets/Fonts/#Poppins</FontFamily>
+
+            <!-- Estilo global para TextBlock -->
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="{StaticResource FontPoppins}" />
+            </Style>
+
+            <!-- Estilo global para Label -->
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="{StaticResource FontPoppins}" />
+            </Style>
+
+            <!-- Estilo global para Button (opcional) -->
+            <Style TargetType="Button">
+                <Setter Property="FontFamily" Value="{StaticResource FontPoppins}" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

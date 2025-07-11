@@ -1,181 +1,198 @@
-﻿using DPFP;
-using DPFP.Capture;
-using DPFP.Processing;
-using FlashCap;
-using System;
-using System.Drawing;
-using System.IO;
+﻿using Checador_App_Wpf.Models;
+using Checador_App_Wpf.Services;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Globalization;
+using Checador_App_Wpf.Controllers;
+using System.Diagnostics;
 using System.Windows.Media.Imaging;
+using Checador_App_Wpf.Components.Fingerprints;
 
 namespace ControlDeCheckeo.Views
 {
     public partial class RRHHView : UserControl
     {
-        private Bitmap? _lastFrame;
-        private CaptureDevice? _device;
-        private Capture _fingerprintCapture;  // Instancia para captura de huellas
-        private Enrollment _enroller;  // Instancia para manejar la inscripción de huellas
+        private readonly EmpleadoService _empleadoService;
+        private List<Empleado> todosLosEmpleados = new();
+        FingerprintRegisterControl fingerprintRegisterControl;
+
 
         public RRHHView()
         {
             InitializeComponent();
-            Loaded += RRHHView_Loaded;
-            Unloaded += RRHHView_Unloaded;
+            _empleadoService = new EmpleadoService();
+            CargarEmpleados();
+            MostrarUsuarioActual();
         }
 
-        private async void RRHHView_Loaded(object sender, RoutedEventArgs e)
+        private async void CargarEmpleados()
         {
-            // Configuración de la cámara (sin cambios)
-            var devices = new CaptureDevices();
-            var descriptor = devices.EnumerateDescriptors().FirstOrDefault();
+            Debug.WriteLine("🔄 Cargando lista de empleados...");
+            MainWindow.Instance.MostrarLoader("Cargando empleados...");
 
-            if (descriptor != null)
+            todosLosEmpleados = await _empleadoService.GetEmpleadosAsync();
+
+            MainWindow.Instance.OcultarLoader();
+
+            if (todosLosEmpleados != null)
             {
-                var characteristic = descriptor.Characteristics
-                    .FirstOrDefault(c => c.Width == 640 && c.Height == 480);
-
-                _device = await descriptor.OpenAsync(characteristic, async bufferScope =>
-                {
-                    byte[] imageData = bufferScope.Buffer.ExtractImage();
-                    using var ms = new MemoryStream(imageData);
-                    var bitmap = new Bitmap(ms);
-
-                    Dispatcher.Invoke(() =>
-                    {
-                        _lastFrame?.Dispose();
-                        _lastFrame = new Bitmap(bitmap);
-                        imgCamara.Source = ConvertBitmapToImageSource(bitmap);
-                    });
-                });
-
-                await _device.StartAsync();
+                Debug.WriteLine(todosLosEmpleados);
+                Debug.WriteLine($"✅ {todosLosEmpleados.Count} empleados cargados.");
+                lstEmpleados.ItemsSource = todosLosEmpleados;
             }
             else
             {
-                MessageBox.Show("No se encontró ninguna cámara.");
-            }
-
-            // Inicialización del lector de huellas
-            _fingerprintCapture = new Capture();
-            _enroller = new Enrollment();
-            _fingerprintCapture.EventHandler = new DPFPHandler(this);
-            _fingerprintCapture.StartCapture();
-        }
-
-        private async void RRHHView_Unloaded(object sender, RoutedEventArgs e)
-        {
-            // Detener la captura de la huella y la cámara
-            if (_device != null)
-            {
-                await _device.StopAsync();
-                _device.Dispose();
-            }
-
-            if (_fingerprintCapture != null)
-            {
-                _fingerprintCapture.StopCapture();
-                _fingerprintCapture.Dispose();
+                Debug.WriteLine("❌ No se pudo cargar la lista de empleados.");
+                lstEmpleados.Items.Add("No se pudo cargar la lista de empleados.");
             }
         }
 
-        // Método para manejar la huella digital capturada
-        private class DPFPHandler : DPFP.Capture.EventHandler
+        private void txtBuscarEmpleado_TextChanged(object sender, TextChangedEventArgs e)
         {
-            private readonly RRHHView _view;
+            string filtro = QuitarAcentos(txtBuscarEmpleado.Text.Trim().ToLower());
+            Debug.WriteLine($"🔍 Buscando empleados con filtro: '{filtro}'");
 
-            public DPFPHandler(RRHHView view)
-            {
-                _view = view;
-            }
+            var filtrados = todosLosEmpleados
+                .Where(emp => QuitarAcentos(emp.nombreUsuario.ToLower()).Contains(filtro))
+                .ToList();
 
-            public void OnComplete(object capture, string readerSerialNumber, Sample sample)
+            Debug.WriteLine($"🔎 Resultados encontrados: {filtrados.Count}");
+            lstEmpleados.ItemsSource = filtrados;
+        }
+
+        private string QuitarAcentos(string texto)
+        {
+            var normalized = texto.Normalize(NormalizationForm.FormD);
+            return new string(normalized
+                .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                .ToArray());
+        }
+
+        private async void lstEmpleados_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstEmpleados.SelectedItem is Empleado empleadoSeleccionado)
             {
-                _view.Dispatcher.Invoke(() =>
+                Debug.WriteLine($"👤 Empleado seleccionado: {empleadoSeleccionado.nombreUsuario} (ID: {empleadoSeleccionado.idUsuario})");
+
+                MainWindow.Instance.MostrarLoader("Obteniendo detalles del empleado...");
+
+                var detalleEmpleado = await _empleadoService.GetEmpleadoAsync(empleadoSeleccionado.idUsuario);
+
+                MainWindow.Instance.OcultarLoader();
+
+                if (detalleEmpleado != null)
                 {
-                    var features = _view.ExtractFeatures(sample, DataPurpose.Enrollment);
-                    if (features != null && _view._enroller != null)
-                    {
-                        _view._enroller.AddFeatures(features);
+                    Debug.WriteLine($"📋 Detalles del empleado obtenidos correctamente para ID {detalleEmpleado.IdUsuario}.");
+                    MostrarDetalleEmpleado(detalleEmpleado);
 
-                        // Si se ha capturado la huella completa
-                        if (_view._enroller.TemplateStatus == Enrollment.Status.Ready)
+                    if (registerControl.IsInitialized)
+                    {
+                        Debug.WriteLine("✅ Lector inicializado. Preparando huellas para nuevo usuario...");
+
+                        // ✅ Cargar huellas y resetear lector
+                        await registerControl.PrepararRegistroParaUsuario(detalleEmpleado.IdUsuario);
+                    }
+                    else
+                    {
+                        Debug.WriteLine("⚠️ Lector no inicializado.");
+                        MessageBox.Show("El lector aún no está listo. Espere un momento e intente de nuevo.", "Lector no iniciado", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine($"❌ No se pudieron obtener los detalles del empleado con ID {empleadoSeleccionado.idUsuario}");
+                }
+            }
+        }
+
+
+        private async void MostrarDetalleEmpleado(EmpleadoDetalle empleado)
+        {
+            Debug.WriteLine($"🧾 Mostrando detalles para: {empleado.NombreUsuario}");
+
+            Nombre.Text = (empleado.NombreUsuario + " " + empleado.ApellidoPaternoUsuario + " " + empleado.ApellidoMaternoUsuario) ?? "Sin nombre";
+            RFC.Text = empleado.ClaveUsuario ?? "Sin RFC";
+            NumeroEmpleado.Text = empleado.ClaveUsuario ?? "Sin número";
+            Departamento.Text = empleado.NombreArea ?? "Sin departamento";
+            Cargo.Text = empleado.NombreRol ?? "Sin puesto";
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(empleado.FotoUsuarioURL))
+                {
+                    userPhoto.Source = new BitmapImage(new Uri(empleado.FotoUsuarioURL));
+                }
+                else
+                {
+                    userPhoto.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Images/Avatar.png"));
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"⚠️ Error al cargar la imagen: {ex.Message}");
+                userPhoto.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Images/Avatar.png"));
+            }
+
+            if (fingerprintRegisterControl != null && empleado.IdUsuario > 0)
+            {
+                try
+                {
+                    await fingerprintRegisterControl.PrepararRegistroParaUsuario(empleado.IdUsuario);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"❌ Error al recargar huellas del usuario: {ex.Message}");
+                }
+            }
+        }
+
+
+        private async void MostrarUsuarioActual()
+        {
+            var user = AuthController.UsuarioActual;
+
+            if (user != null)
+            {
+                Debug.WriteLine($"👤 Usuario que atiende: {user.NombreUsuario} | Clave: {user.ClaveUsuario} | Puesto: {user.PuestoUsuario}");
+
+                NombreRH.Text = user.NombreUsuario ?? "Sin nombre";
+                NumeroEmpleadoRH.Text = user.ClaveUsuario ?? "Sin número";
+                CargoRH.Text = user.PuestoUsuario ?? "Sin puesto";
+
+                try
+                {
+                    var detalleEmpleado = await _empleadoService.GetEmpleadoAsync(user.IdUsuario);
+                    if (detalleEmpleado != null)
+                    {
+                        if (!string.IsNullOrWhiteSpace(detalleEmpleado.FotoUsuarioURL))
                         {
-                            _view._fingerprintCapture?.StopCapture();
-                            _view.txtEstadoHuella.Text = "Huella registrada con éxito.";
-                            _view.MostrarHuella(sample);
+                            actualUserPhoto.Source = new BitmapImage(new Uri(detalleEmpleado.FotoUsuarioURL));
                         }
-                        else if (_view._enroller.TemplateStatus == Enrollment.Status.Failed)
+                        else
                         {
-                            _view.txtEstadoHuella.Text = "Error al capturar huella.";
-                            _view._enroller.Clear();
-                            _view._fingerprintCapture?.StopCapture();
+                            actualUserPhoto.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Images/Avatar.png"));
                         }
                     }
                     else
                     {
-                        _view.txtEstadoHuella.Text = "Muestra inválida. Intente nuevamente.";
+                        Debug.WriteLine("⚠️ No se pudieron obtener los detalles del usuario actual.");
+                        actualUserPhoto.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Images/Avatar.png"));
                     }
-                });
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"❌ Error al cargar detalles del usuario actual: {ex.Message}");
+                    actualUserPhoto.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Images/Avatar.png"));
+                }
             }
-
-            public void OnFingerGone(object capture, string readerSerialNumber) { }
-            public void OnFingerTouch(object capture, string readerSerialNumber) { }
-            public void OnReaderConnect(object capture, string readerSerialNumber) { }
-            public void OnReaderDisconnect(object capture, string readerSerialNumber) { }
-            public void OnSampleQuality(object capture, string readerSerialNumber, CaptureFeedback captureFeedback) { }
-        }
-
-        // Extrae las características de la huella
-        private FeatureSet ExtractFeatures(Sample sample, DataPurpose purpose)
-        {
-            var extractor = new FeatureExtraction();
-            CaptureFeedback feedback = CaptureFeedback.None;
-            FeatureSet features = new FeatureSet();
-            extractor.CreateFeatureSet(sample, purpose, ref feedback, ref features);
-            return feedback == CaptureFeedback.Good ? features : null;
-        }
-
-        // Muestra la huella en el control Image
-        private void MostrarHuella(Sample sample)
-        {
-            var convert = new SampleConversion();
-            Bitmap bmp = null;
-            convert.ConvertToPicture(sample, ref bmp);
-
-            if (bmp != null)
+            else
             {
-                imgHuella.Source = ConvertBitmapToImageSource(bmp);  // Actualiza el control de huella
+                Debug.WriteLine("⚠️ No hay usuario autenticado disponible.");
             }
         }
 
-        // Convierte un Bitmap a ImageSource para WPF
-        private BitmapImage ConvertBitmapToImageSource(Bitmap bitmap)
-        {
-            using var memory = new MemoryStream();
-            bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-            memory.Position = 0;
-
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = memory;
-            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapImage.EndInit();
-
-            return bitmapImage;
-        }
-
-        // Captura la huella en un archivo
-        private void btnTomarFoto_Click(object sender, RoutedEventArgs e)
-        {
-            if (_lastFrame != null)
-            {
-                string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "foto_usuario.jpg");
-                _lastFrame.Save(path, System.Drawing.Imaging.ImageFormat.Jpeg);
-                MessageBox.Show($"Foto guardada: {path}");
-            }
-        }
     }
 }

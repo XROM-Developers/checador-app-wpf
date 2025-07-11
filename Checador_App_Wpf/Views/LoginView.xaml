@@ -1,28 +1,108 @@
 ﻿<UserControl x:Class="ControlDeCheckeo.Views.LoginView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="{StaticResource BrushColorFondo}">
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls">
+
+    <UserControl.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#1F3A66" Offset="0"/>
+            <GradientStop Color="#3E5879" Offset="1"/>
+        </LinearGradientBrush>
+    </UserControl.Background>
 
     <Grid>
-        <Border CornerRadius="12" Background="White" Padding="40" Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource BorderPanel}">
-            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                <!-- Título -->
-                <TextBlock Text="CONTROL BIOMETRICO" Style="{StaticResource TextBlockTitle}" Foreground="{StaticResource BrushColorSecundario}" TextAlignment="Center" Margin="0 0 0 20"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
 
-                <!-- Campo de Usuario -->
-                <TextBlock Text="Usuario" Style="{StaticResource TextBlockSecondary}"/>
-                <TextBox Height="32" Margin="0,0,0,10" Padding="5" Style="{StaticResource TextBoxStyle}" />
-
-                <!-- Campo de Contraseña -->
-                <TextBlock Text="Contraseña" Style="{StaticResource TextBlockSecondary}"/>
-                <PasswordBox Height="32" Margin="0,0,0,20" Padding="5" Style="{StaticResource }"/>
-
-                <!-- Botón de Iniciar Sesión -->
-                <Button Content="Iniciar Sesión" Style="{StaticResource BotonPrincipal}" Height="35" Cursor="Hand" BorderBrush="{StaticResource BrushColorPrincipal}" BorderThickness="1"/>
-
-                <!-- Texto de Derechos -->
-                <TextBlock Text="(c) 2025 Control Biometrico" FontSize="10" Foreground="#7f8c8d" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+        <!-- Lado izquierdo: fondo azul con texto blanco -->
+        <Grid Grid.Column="0" Background="#8fa5c7">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Image Source="pack://application:,,,/Assets/Images/logo-tpp.png"
+Width="350"
+Height="96"
+Stretch="Uniform"
+Margin="0 0 0 40" />
+                <TextBlock Text="Bienvenido a"
+                           Foreground="#00548c"
+                           FontSize="22"
+                           FontWeight="Light"
+                           TextAlignment="Center"
+                           Margin="0 0 0 5"/>
+                <TextBlock Text="CONTROL BIOMÉTRICO"
+                           Foreground="#00548c"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           TextAlignment="Center"
+                           Margin="0 0 0 20"/>
+                <TextBlock Text="Sistema de verificación de acceso"
+                           Foreground="#00548c"
+                           FontSize="14"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap"/>
             </StackPanel>
-        </Border>
+        </Grid>
+
+        <!-- Lado derecho: imagen con desenfoque y formulario encima -->
+        <Grid Grid.Column="1">
+            <!-- Imagen de fondo -->
+            <Image Source="pack://application:,,,/Assets/Images/login-background.jpg"
+                   Stretch="UniformToFill"
+                   Panel.ZIndex="0">
+                <Image.Effect>
+                    <BlurEffect Radius="10"/>
+                </Image.Effect>
+            </Image>
+
+            <!-- Capa blanca translúcida tipo glass -->
+            <Border Background="#AAFFFFFF" Panel.ZIndex="1"/>
+
+            <!-- Panel de login -->
+            <Border CornerRadius="20"
+                    Background="White"
+                    Width="400"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="40"
+                    Panel.ZIndex="2">
+                <StackPanel>
+                    <TextBlock Text="Iniciar Sesión"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               Foreground="#1F3A66"
+                               Margin="0 0 0 20"
+                               TextAlignment="Center"/>
+
+                    <TextBlock Text="Usuario" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="txtUsuario"
+         Height="32" Margin="0,0,0,10" Padding="5"
+         KeyDown="LoginField_KeyDown"
+         controls:TextBoxHelper.Watermark="Ingrese su usuario"/>
+
+                    <TextBlock Text="Contraseña" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                    <PasswordBox x:Name="txtClave"
+             Height="32" Margin="0,0,0,20" Padding="5"
+             KeyDown="LoginField_KeyDown"
+             controls:TextBoxHelper.Watermark="Ingrese su contraseña"/>
+
+                    <Button Content="Iniciar Sesión"
+                            Height="40"
+                            FontWeight="Bold"
+                            Background="#1F3A66"
+                            Foreground="White"
+                            Cursor="Hand"
+                            BorderBrush="#16325C"
+                            BorderThickness="1"
+                            Click="BtnLogin_Click"/>
+
+                    <TextBlock Text="(c) 2025 Control Biométrico"
+                               FontSize="10"
+                               Foreground="#7f8c8d"
+                               HorizontalAlignment="Center"
+                               Margin="0,20,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

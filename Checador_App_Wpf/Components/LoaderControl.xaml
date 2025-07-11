@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Checador_App_Wpf.Components.LoaderControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#80000000"
+    HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             IsHitTestVisible="True">
+
+    <Grid>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform x:Name="LoaderRotate" CenterX="60" CenterY="60"/>
+                    <ScaleTransform x:Name="LoaderScale" CenterX="60" CenterY="60"/>
+                </TransformGroup>
+            </Grid.RenderTransform>
+
+            <Ellipse Width="100" Height="100" Stroke="#3498DB" StrokeThickness="8" Opacity="0.3"/>
+
+            <Path Stroke="#3498DB" StrokeThickness="8"
+                  Data="M 60,10 A 50,50 0 1 1 59.99,10"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+        </Grid>
+
+        <TextBlock x:Name="Mensaje" Text="Cargando..."
+                   VerticalAlignment="Bottom"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,80"
+                   FontSize="16"
+                   FontWeight="Bold"
+                   Foreground="White"/>
+    </Grid>
+</UserControl>

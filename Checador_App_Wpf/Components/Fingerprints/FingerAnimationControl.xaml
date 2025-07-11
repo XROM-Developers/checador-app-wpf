@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="Checador_App_Wpf.Components.Fingerprints.FingerAnimationControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="500" Height="400">
+    <Viewbox Stretch="Fill" StretchDirection="Both">
+        <Canvas Width="600" Height="400">
+            <!-- Dedos Izquierda -->
+            <Ellipse x:Name="Left1" Width="32" Height="32" Fill="#3498DB" Canvas.Left="35" Canvas.Top="160" MouseDown="OnFingerClicked"/>
+            <Ellipse x:Name="Left2" Width="32" Height="32" Fill="#3498DB" Canvas.Left="88" Canvas.Top="61" MouseDown="OnFingerClicked"/>
+            <Ellipse x:Name="Left3" Width="32" Height="32" Fill="#3498DB" Canvas.Left="134" Canvas.Top="52" MouseDown="OnFingerClicked"/>
+            <Ellipse x:Name="Left4" Width="32" Height="32" Fill="#3498DB" Canvas.Left="180" Canvas.Top="61" MouseDown="OnFingerClicked"/>
+            <Ellipse x:Name="Left5" Width="32" Height="32" Fill="#3498DB" Canvas.Left="219" Canvas.Top="93" MouseDown="OnFingerClicked"/>
+
+            <!-- Dedos Derecha -->
+            <Ellipse x:Name="Right5" Width="32" Height="32" Fill="#3498DB" Canvas.Left="349" Canvas.Top="93" MouseDown="OnFingerClicked"/>
+            <Ellipse x:Name="Right4" Width="32" Height="32" Fill="#3498DB" Canvas.Left="388" Canvas.Top="61" MouseDown="OnFingerClicked"/>
+            <Ellipse x:Name="Right3" Width="32" Height="32" Fill="#3498DB" Canvas.Left="435" Canvas.Top="52" MouseDown="OnFingerClicked"/>
+            <Ellipse x:Name="Right2" Width="32" Height="32" Fill="#3498DB" Canvas.Left="481" Canvas.Top="61" MouseDown="OnFingerClicked"/>
+            <Ellipse x:Name="Right1" Width="32" Height="32" Fill="#3498DB" Canvas.Left="534" Canvas.Top="160" MouseDown="OnFingerClicked"/>
+
+            <!-- Manos -->
+            <Image Source="/Assets/Images/Left_Hand.png" Width="300" Canvas.Left="0" IsHitTestVisible="False"/>
+            <Image Source="/Assets/Images/Right_Hand.png" Width="300" Canvas.Left="300" IsHitTestVisible="False"/>
+        </Canvas>
+    </Viewbox>
+</UserControl>

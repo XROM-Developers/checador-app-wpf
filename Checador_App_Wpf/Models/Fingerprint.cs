@@ -18,4 +18,12 @@ namespace Checador_App_Wpf.Models
             CapturedAt = DateTime.Now;
         }
     }
+    public class AccessResponse
+    {
+        public int idUsuario { get; set; }
+        public string fotoPerfil { get; set; }
+        public string mensaje { get; set; }
+        public string horaAcceso { get; set; }
+    }
+
 }

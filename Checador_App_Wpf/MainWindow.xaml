@@ -4,10 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ControlDeCheckeo"
+        xmlns:components="clr-namespace:Checador_App_Wpf.Components"
         mc:Ignorable="d"
         Title="Control de Checkeo"
-        MinHeight="450" MinWidth="800"
-        ResizeMode="CanResize"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Topmost="True"
         Background="#ECF0F1">
 
     <Grid>
@@ -27,30 +30,54 @@
                            DockPanel.Dock="Left"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="RRHH"
-                            Margin="5,0,0,0"
-                            Padding="12,6"
-                            Click="RRHH_Click"
-                            Background="#3498DB"
+                    <!-- Botón de Logout -->
+                    <Button Click="Logout_Click"
+                            Background="#E74C3C"
                             Foreground="White"
-                            BorderBrush="#2C6FB0"
-                            FontWeight="SemiBold"
-                            Cursor="Hand"/>
+                            Margin="10,0,0,0"
+                            Padding="10"
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="16"
+                            ToolTip="Cerrar sesión"
+                            Cursor="Hand"
+                            BorderBrush="#C0392B"
+                            BorderThickness="1"
+                            Width="40"
+                            Height="40"
+                            Content=""
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"/>
 
-                    <Button Content="Vigilante"
-                            Margin="5,0,0,0"
-                            Padding="12,6"
-                            Click="Vigilante_Click"
-                            Background="#3498DB"
+                    <!-- Botón de salida segura -->
+                    <Button Click="CerrarConClave_Click"
+                            Background="#2C3E50"
                             Foreground="White"
-                            BorderBrush="#2C6FB0"
-                            FontWeight="SemiBold"
-                            Cursor="Hand"/>
+                            Margin="10,0,0,0"
+                            Padding="10"
+                            ToolTip="Salir del sistema"
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="16"
+                            Cursor="Hand"
+                            BorderBrush="#1A252F"
+                            BorderThickness="1"
+                            Width="40"
+                            Height="40"
+                            Content="X"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"/>
                 </StackPanel>
             </DockPanel>
         </Border>
 
         <!-- Contenedor de vistas -->
         <ContentControl x:Name="MainContent" Grid.Row="1"/>
+
+        <!-- 🔄 Loader Global -->
+        <components:LoaderControl x:Name="GlobalLoader"
+                                  Visibility="Collapsed"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Grid.RowSpan="2"
+                                  Panel.ZIndex="999"/>
     </Grid>
 </Window>
