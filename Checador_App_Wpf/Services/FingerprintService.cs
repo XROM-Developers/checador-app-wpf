@@ -10,9 +10,15 @@ using System.Diagnostics;
 using Checador_App_Wpf.Models;
 using static Checador_App_Wpf.Models.EmpleadoHuella;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using PusherClient;
+using System.Windows.Threading;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 public class FingerprintService
 {
+    private Pusher _pusher;
+    private Channel _channel;
     private readonly HttpClient _client;
     private readonly string baseUrl = "https://cm-backend.tpp.com.mx/v1/api/";
 
@@ -25,11 +31,72 @@ public class FingerprintService
             BaseAddress = new Uri(baseUrl),
             Timeout = TimeSpan.FromSeconds(200)
         };
-
+        _ = InitPusherAsync();
         _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {AuthController.Token}");
         _client.DefaultRequestHeaders.Add("IdUsuario", AuthController.UsuarioActual.IdUsuario.ToString() ?? "");
 
         Debug.WriteLine($"🔧 Base URL: {baseUrl}");
+    }
+    private static void DebugLog(string msg)
+    {
+        System.Diagnostics.Debug.WriteLine(msg);
+    }
+
+    private async Task InitPusherAsync()
+    {
+        var options = new PusherOptions { Cluster = "mt1", Encrypted = true };
+        _pusher = new Pusher("7533fef6e8c6cb4fd89e", options);
+
+        _pusher.ConnectionStateChanged += (sender, state) =>
+        {
+            Console.WriteLine($"[PUSHER] State: {state}");
+            DebugLog($"[PUSHER] State: {state}");
+        };
+
+        _pusher.Error += (sender, ex) =>
+        {
+            Console.WriteLine($"[PUSHER] Error: {ex?.Message}");
+            DebugLog($"[PUSHER] Error: {ex?.Message}");
+        };
+
+        Console.WriteLine("[PUSHER] Conectando...");
+        await _pusher.ConnectAsync();
+        Console.WriteLine($"[PUSHER] Conectado. SocketId={_pusher.SocketID}");
+        DebugLog($"[PUSHER] Conectado. SocketId={_pusher.SocketID}");
+
+        Console.WriteLine("[PUSHER] Suscribiendo a canal: accesos...");
+        _channel = await _pusher.SubscribeAsync("accesos");
+
+       
+
+        _channel.Bind("entrada-registrada", (string payload) =>
+        {
+            try
+            {
+                Console.WriteLine("[PUSHER] Evento: entrada-registrada");
+                Console.WriteLine("[PUSHER] Payload (raw): " + payload);
+
+                var jo = JObject.Parse(payload);
+
+                string empleado = jo.Value<string>("empleado");
+                string serialNo = jo.Value<string>("serialNo");
+                string deviceIP = jo.Value<string>("deviceIP");
+                string nombre = jo.Value<string>("nombre");
+                string ts = jo.Value<string>("ts");
+
+                Console.WriteLine($"          empleado={empleado}, nombre={nombre}, serialNo={serialNo}, ip={deviceIP}, ts={ts}");
+                DebugLog("[PUSHER] Payload (pretty):\n" + jo.ToString(Formatting.Indented));
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("[PUSHER] Error parseando evento: " + ex.Message);
+                DebugLog("[PUSHER] Error parseando evento: " + ex.Message);
+            }
+        });
+
+        Console.WriteLine("[PUSHER] Bind OK: evento 'entrada-registrada'");
+        DebugLog("[PUSHER] Bind OK: evento 'entrada-registrada'");
     }
 
     public async Task<string> RegisterFingerprintAsync(int idUsuario, byte[] archivoHuella, string dedo)
