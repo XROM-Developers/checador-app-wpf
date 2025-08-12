@@ -29,7 +29,7 @@ namespace Checador_App_Wpf.Services
             var response = await _client.GetAsync("Empleados");
 
             if (response.IsSuccessStatusCode)
-            {
+            { 
                 var responseJson = await response.Content.ReadAsStringAsync();
                 return JsonSerializer.Deserialize<List<Empleado>>(responseJson, new JsonSerializerOptions
                 {

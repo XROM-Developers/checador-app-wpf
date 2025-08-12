@@ -11,14 +11,47 @@ namespace ControlDeCheckeo.Views
         public LoginView()
         {
             InitializeComponent();
+
+            // Focus automático al input del usuario al cargar la vista
+            Loaded += (s, e) => txtUsuario.Focus();
         }
 
         private void LoginField_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                // Ejecuta la lógica como si hicieras clic en el botón
-                BtnLogin_Click(sender, new RoutedEventArgs());
+                if (sender == txtUsuario)
+                {
+                    string usuario = txtUsuario.Text.Trim();
+
+                    if (!string.IsNullOrWhiteSpace(usuario))
+                    {
+                        // Si escribió algo, mover el foco a la contraseña
+                        txtClave.Focus();
+                    }
+                    else
+                    {
+                        // Si está vacío, mostrar error
+                        MessageBox.Show("Por favor, ingresa tu usuario.", "Campo requerido", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        txtUsuario.Focus();
+                    }
+                }
+                else if (sender == txtClave)
+                {
+                    string clave = txtClave.Password.Trim();
+
+                    if (string.IsNullOrWhiteSpace(clave))
+                    {
+                        // Si la contraseña está vacía, mostrar error
+                        MessageBox.Show("Por favor, ingresa tu contraseña.", "Campo requerido", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        txtClave.Focus();
+                    }
+                    else
+                    {
+                        // Ambos campos están listos, iniciar sesión
+                        BtnLogin_Click(sender, new RoutedEventArgs());
+                    }
+                }
             }
         }
 
@@ -27,7 +60,7 @@ namespace ControlDeCheckeo.Views
             string usuario = txtUsuario.Text.Trim();
             string clave = txtClave.Password.Trim();
 
-            // 🚨 Validación de campos vacíos
+            // Validaciones de respaldo (en caso de que alguien use clic en el botón directamente)
             if (string.IsNullOrWhiteSpace(usuario))
             {
                 MessageBox.Show("Por favor, ingresa tu usuario.", "Campo requerido", MessageBoxButton.OK, MessageBoxImage.Warning);

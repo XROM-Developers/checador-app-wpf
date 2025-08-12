@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace ControlDeCheckeo.Views
 {
@@ -9,6 +10,9 @@ namespace ControlDeCheckeo.Views
         public PasswordDialog()
         {
             InitializeComponent();
+
+            // Dar foco automáticamente al PasswordBox al abrir el diálogo
+            Loaded += (s, e) => passwordBox.Focus();
         }
 
         private void Aceptar_Click(object sender, RoutedEventArgs e)
@@ -21,6 +25,7 @@ namespace ControlDeCheckeo.Views
             else
             {
                 MessageBox.Show("Por favor ingresa una contraseña.", "Campo requerido", MessageBoxButton.OK, MessageBoxImage.Warning);
+                passwordBox.Focus();
             }
         }
 
@@ -28,6 +33,14 @@ namespace ControlDeCheckeo.Views
         {
             DialogResult = false;
             Close();
+        }
+
+        private void passwordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Aceptar_Click(sender, new RoutedEventArgs());
+            }
         }
     }
 }

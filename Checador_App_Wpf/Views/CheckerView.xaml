@@ -54,7 +54,7 @@
 
                     <!-- Nombre -->
                     <TextBlock x:Name="UserName"
-                       Text="Juan Pérez"
+                       Text=""
                        FontSize="36"
                        FontWeight="Bold"
                        Foreground="#1F3A66"
@@ -64,7 +64,7 @@
 
                     <!-- Puesto -->
                     <TextBlock x:Name="Puesto"
-                       Text="VIGILANTE DE ACCESO"
+                       Text="Esperando Acceso..."
                        FontSize="25"
                        Foreground="#7F8C8D"
                        FontWeight="Bold"

@@ -41,6 +41,7 @@ namespace ControlDeCheckeo.Views
             _ = CargarDatosDelGuardiaAsync();
             FotoPerfilBrush = (ImageBrush)this.Resources["FotoPerfilBrushKey"];
             FotoPerfilBrush = (ImageBrush)this.Resources["FotoPerfilBrushKey"];
+            lblUltima.Text = "Esperando Acceso...";
 
         }
 
@@ -322,6 +323,7 @@ namespace ControlDeCheckeo.Views
             timer.Tick += (s, e) =>
             {
                 lblHora.Text = DateTime.Now.ToString("HH:mm:ss");
+                lblFecha.Text = DateTime.Now.ToString("dddd, dd 'de' MMMM 'de' yyyy");
             };
             timer.Start();
         }

@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>CheckadorTPP.ico</ApplicationIcon>
+    <ApplicationIcon>TPPIcon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -51,7 +51,7 @@
     <Content Include="Assets\Sounds\error.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CheckadorTPP.ico" />
+    <Content Include="TPPIcon.ico" />
   </ItemGroup>
 
   <ItemGroup>
